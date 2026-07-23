@@ -1,0 +1,63 @@
+// GLOBAL COVID-19 DASHBOARD DAX
+// Table: COVID19_Global
+
+Total Cases = SUM(COVID19_Global[Total Cases])
+New Cases = SUM(COVID19_Global[New Cases])
+
+Total Deaths = SUM(COVID19_Global[Total Deaths])
+New Deaths = SUM(COVID19_Global[New Deaths])
+
+Death Percentage =
+DIVIDE([Total Deaths],[Total Cases],0)
+
+Total Vaccinations =
+SUM(COVID19_Global[Total Vaccinations])
+
+People Vaccinated =
+SUM(COVID19_Global[People Vaccinated])
+
+People Fully Vaccinated =
+SUM(COVID19_Global[People Fully Vaccinated])
+
+Vaccination Rate % =
+DIVIDE([People Fully Vaccinated],SUM(COVID19_Global[Population]),0)
+
+Average Infection Rate =
+AVERAGE(COVID19_Global[Infection Rate])
+
+Percent Population Infected =
+DIVIDE([Total Cases],SUM(COVID19_Global[Population]),0)
+
+Total Population =
+SUM(COVID19_Global[Population])
+
+Countries =
+DISTINCTCOUNT(COVID19_Global[Country])
+
+Continents =
+DISTINCTCOUNT(COVID19_Global[Continent])
+
+Average Age = BLANK()
+
+Selected Country =
+SELECTEDVALUE(COVID19_Global[Country],"All Countries")
+
+Selected Continent =
+SELECTEDVALUE(COVID19_Global[Continent],"All Continents")
+
+Dashboard Title =
+"Global COVID-19 Analysis"
+
+Highest Infection Country =
+TOPN(1,VALUES(COVID19_Global[Country]),[Percent Population Infected],DESC)
+
+Highest Death Country =
+TOPN(1,VALUES(COVID19_Global[Country]),[Total Deaths],DESC)
+
+Rolling Cases =
+CALCULATE([New Cases],
+FILTER(ALL(COVID19_Global[Date]),COVID19_Global[Date]<=MAX(COVID19_Global[Date])))
+
+Rolling Deaths =
+CALCULATE([New Deaths],
+FILTER(ALL(COVID19_Global[Date]),COVID19_Global[Date]<=MAX(COVID19_Global[Date])))
